@@ -109,7 +109,7 @@ function Game() {
     return { destinationRow, destinationCol };
   };
 
-  const moveAllPiecesToEdge = (direction) => {
+  const shiftGravity = (direction) => {
     const newBoard = [...board];
     const positionsToCheck = []; // To track the positions of moved pieces
 
@@ -316,10 +316,10 @@ function Game() {
 
       {/* Edge buttons */}
       <div className="edge-buttons">
-        <button onClick={() => moveAllPiecesToEdge('up')}>Move Up</button>
-        <button onClick={() => moveAllPiecesToEdge('down')}>Move Down</button>
-        <button onClick={() => moveAllPiecesToEdge('left')}>Move Left</button>
-        <button onClick={() => moveAllPiecesToEdge('right')}>Move Right</button>
+        <button onClick={() => shiftGravity('up')}>Move Up</button>
+        <button onClick={() => shiftGravity('down')}>Move Down</button>
+        <button onClick={() => shiftGravity('left')}>Move Left</button>
+        <button onClick={() => shiftGravity('right')}>Move Right</button>
       </div>
 
       {/* Piece following the cursor when picked */}
