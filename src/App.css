@@ -38,21 +38,58 @@
 }
 
 .board {
-  display: grid;
-  grid-template-columns: repeat(7, 1fr);
-  gap: 5px;
-  width: 400px;
-  height: 400px;
+  display: flex;
+  flex-direction: column; /* Stack rows vertically */
+  gap: 10px; /* Optional: Adds space between rows */
+}
+
+.board-row {
+  display: flex; /* Ensures each row is laid out horizontally */
+  gap: 5px; /* Optional: Adds space between spaces */
+  justify-content: center;
 }
 
 .space {
+  width: 50px; /* Define size for each space */
+  height: 50px;
   background-color: lightgray;
   display: flex;
-  justify-content: center;
   align-items: center;
+  justify-content: center;
+
+}
+
+.corner {
+  width: 50px; /* Define size for each space */
+  height: 50px;
+  background-color: transparent;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  pointer-events: none;
+
+}
+
+.slot {
+  width: 48px;
+  height: 48px;
+  background-color: lightyellow;
+  border: 2px solid gold;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+}
+
+.slot:hover {
+  background-color: darkgoldenrod;
 }
 
 .floating-piece {
   width: 40px;
   height: 40px;
+}
+
+.pile {
+  justify-content: center;
 }
