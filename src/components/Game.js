@@ -2,8 +2,8 @@ import React, { useState, useEffect } from 'react';
 import Board from './Board';
 import Pile from './Pile';
 import Piece from './Piece';
-import Toast from './Toast'; // Import the Toast component
-import Corner from './Corner'; // Import the Corner component
+import Toast from './Toast';
+import Corner from './Corner';
 
 function Game() {
   const rows = [
@@ -19,12 +19,16 @@ function Game() {
   const [cursorPosition, setCursorPosition] = useState({ x: 0, y: 0 });
   const [winner, setWinner] = useState(null);
   const [turn, setTurn] = useState('teamOne');
-  const [toastMessage, setToastMessage] = useState(''); // Toast message state
-  const [showToast, setShowToast] = useState(false); // Show toast state
+  const [toastMessage, setToastMessage] = useState('');
+  const [showToast, setShowToast] = useState(false);
 
   // Handle selecting a piece from the pile
   const handleSelectPiece = (team) => {
-    setSelectedTeam(team);
+    if (selectedTeam) {
+      setSelectedTeam(null);
+    } else {
+      setSelectedTeam(team)
+    }
   };
 
   const handleTurnChange = (turn) => {
@@ -275,8 +279,6 @@ function Game() {
 
     return count >= 4;  // Return true if there are 4 or more in a row
   };
-
-
 
   // Update cursor position
   useEffect(() => {

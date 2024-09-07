@@ -1,13 +1,15 @@
 import React from 'react';
+import { SPACE } from '../config.js/space';
 
 function Space({ children }) {
   return (
     <div
       className="space"
       style={{
-        width: '50px',
-        height: '50px',
-        border: '1px solid black' }}>
+        width: SPACE.size,
+        height: SPACE.size,
+        border: SPACE.border,
+        }}>
       {children}
     </div>
   );

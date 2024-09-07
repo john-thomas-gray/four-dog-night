@@ -1,3 +1,5 @@
+import SPACE from
+
 .App {
   text-align: center;
 }
@@ -45,13 +47,11 @@
 
 .board-row {
   display: flex; /* Ensures each row is laid out horizontally */
-  gap: 5px; /* Optional: Adds space between spaces */
+  gap: 10px; /* Optional: Adds space between spaces */
   justify-content: center;
 }
 
 .space {
-  width: 50px; /* Define size for each space */
-  height: 50px;
   background-color: lightgray;
   display: flex;
   align-items: center;
@@ -60,21 +60,35 @@
 }
 
 .corner {
-  width: 50px; /* Define size for each space */
-  height: 50px;
   background-color: transparent;
   display: flex;
   align-items: center;
   justify-content: center;
   pointer-events: none;
+}
+
+.gravityButton {
+  display: flex;
+}
+
+.up {
+  justify-content: top;
+}
+
+.left {
+  justify-content: left;
+}
+
+.right {
+
+}
+
+.down {
 
 }
 
 .slot {
-  width: 48px;
-  height: 48px;
-  background-color: lightyellow;
-  border: 2px solid gold;
+  background-color: rgb(0, 0, 0);
   display: flex;
   align-items: center;
   justify-content: center;
@@ -83,6 +97,19 @@
 
 .slot:hover {
   background-color: darkgoldenrod;
+}
+
+.start {
+  display: flex;
+  justify-content: center;
+  font-size: 1rem;
+  cursor: pointer;
+}
+
+.title {
+  display: flex;
+  justify-content: center;
+  font-size: 1rem;
 }
 
 .floating-piece {
