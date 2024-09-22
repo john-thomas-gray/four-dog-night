@@ -296,32 +296,44 @@ function Game() {
     <>
       <div className="title">Four Dog Night</div>
 
-      <Pile team="teamOne" turn={turn} onSelect={() => handleSelectPiece('teamOne')} />
-      <Pile team="teamTwo" turn={turn} onSelect={() => handleSelectPiece('teamTwo')} />
+        <div className="fieldOfPlay">
+            <div className='pile'>
+              <Pile team="teamOne" turn={turn} onSelect={() => handleSelectPiece('teamOne')} />
+            </div>
+            <div className="board">
+              <div className="top-gravity-button">
+                <button onClick={() => shiftGravity('up')}>Move Up</button>
+              </div>
+              <div className="boardMiddle">
+                <div className='left-gravity-button'>
+                  <button onClick={() => shiftGravity('left')}>Move Left</button>
+                </div>
+                <Board
+                  board={board.map((row, rowIndex) =>
+                    row.map((col, colIndex) => {
+                      const isCorner = (rowIndex === 0 || rowIndex === board.length - 1) && (colIndex === 0 || colIndex === board[rowIndex].length - 1);
+                      // Render Corner for corners, otherwise allow normal slots/spaces
+                      return isCorner ? <Corner key={`${rowIndex}-${colIndex}`} /> : col;
+                    })
+                  )}
+                  onPlacePiece={handlePlacePiece}
+                />
+                <div className='right-gravity-button'>
+                  <button onClick={() => shiftGravity('right')}>Move Right</button>
+                </div>
+              </div>
+              <div className='bottom-gravity-button'>
+                <button onClick={() => shiftGravity('down')}>Move Down</button>
+              </div>
+            </div>
+            <div className='pile'>
+              <Pile team="teamTwo" turn={turn} onSelect={() => handleSelectPiece('teamTwo')} />
+            </div>
 
-      <Board
-        board={board.map((row, rowIndex) =>
-          row.map((col, colIndex) => {
-            const isCorner = (rowIndex === 0 || rowIndex === board.length - 1) && (colIndex === 0 || colIndex === board[rowIndex].length - 1);
+          {winner && <div className="winner-message">{winner} wins!</div>}
+          {/* Display Toast */}
+          <Toast message={toastMessage} show={showToast} />
 
-            // Render Corner for corners, otherwise allow normal slots/spaces
-            return isCorner ? <Corner key={`${rowIndex}-${colIndex}`} /> : col;
-          })
-        )}
-        onPlacePiece={handlePlacePiece}
-      />
-
-      {winner && <div className="winner-message">{winner} wins!</div>}
-
-      {/* Display Toast */}
-      <Toast message={toastMessage} show={showToast} />
-
-      {/* Edge buttons */}
-      <div className="edge-buttons">
-        <button onClick={() => shiftGravity('up')}>Move Up</button>
-        <button onClick={() => shiftGravity('down')}>Move Down</button>
-        <button onClick={() => shiftGravity('left')}>Move Left</button>
-        <button onClick={() => shiftGravity('right')}>Move Right</button>
       </div>
 
       {/* Piece following the cursor when picked */}
@@ -329,7 +341,7 @@ function Game() {
         <div
           className="floating-piece"
           style={{
-            position: 'absolute',
+            position: 'fixed',
             left: cursorPosition.x,
             top: cursorPosition.y,
             pointerEvents: 'none', // Prevents interference with other elements

@@ -10,7 +10,7 @@ function Pile({ team, turn, onSelect }) {
   return (
     <div className="pile" onClick={handleClick}>
       <Piece team={team} />
-      <p>{team} Pile</p>
+      <p>{team}</p>
     </div>
   );
 }
