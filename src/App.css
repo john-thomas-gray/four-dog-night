@@ -167,12 +167,15 @@ import SPACE from
 .moon-content {
   position: relative; /* Keep the content (text) unblurred and above the background */
   z-index: 1; /* Ensure the text is on top of the background */
+
+}
+
+.main-title {
   text-align: center;
   color: white; /* Adjust the color of the text if necessary */
   font-family: 'IrishGrover', sans-serif;
-  stroke: black;
-  stroke-width: 11px;
-  font-size: 5rem;
+  font-size: 8rem;
+  -webkit-text-stroke: .25rem black;
 }
 
 .sunset {

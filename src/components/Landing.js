@@ -9,7 +9,7 @@ function Landing(props) {
       <div className='moon'>
         <div className='moon-background'></div>
         <div className='moon-content'>
-          <h1>FOUR DOG NIGHT</h1>
+          <h1 className='main-title'>FOUR DOG NIGHT</h1>
           <h2 className='start' onClick={() => handleClickStart("game")}>Two Player</h2>
           <h2 className='start' onClick={() => handleClickStart("game")}>Four Player</h2>
         </div>
