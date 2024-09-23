@@ -294,8 +294,6 @@ function Game() {
 
   return (
     <>
-      <div className="title">Four Dog Night</div>
-
         <div className="fieldOfPlay">
             <div className='pile'>
               <Pile team="teamOne" turn={turn} onSelect={() => handleSelectPiece('teamOne')} />

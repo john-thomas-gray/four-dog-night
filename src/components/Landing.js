@@ -5,57 +5,17 @@ function Landing(props) {
     props.scroll(section);
   }
   return (
-    <div>
-      <br />
-      <br />
-      <br />
-      <br />
-      <br />
-      <br />
-      <br />
-      <br />
-      <br />
-      <br />
-      <br />
-      <br />
-      <br />
-      <br />
-      <br />
-      <br />
-      <br />
-      <div className='title'>
-        <h1>
-          FOUR DOG NIGHT
-        </h1>
+    <div className="landing-section">
+      <div className='moon'>
+        <div className='moon-background'></div>
+        <div className='moon-content'>
+          <h1>FOUR DOG NIGHT</h1>
+          <h2 className='start' onClick={() => handleClickStart("game")}>Two Player</h2>
+          <h2 className='start' onClick={() => handleClickStart("game")}>Four Player</h2>
+        </div>
       </div>
-      <br />
-        <h2 className='start' onClick={() => handleClickStart("game")}>START</h2>
-      <br />
-      <br />
-      <br />
-      <br />
-      <br />
-      <br />
-      <br />
-      <br />
-      <br />
-      <br />
-      <br />
-      <br />
-      <br />
-      <br />
-      <br />
-      <br />
-      <br />
-      <br />
-      <br />
-      <br />
-      <br />
-      <br />
-      <br />
-      <br />
     </div>
-  )
+  );
 }
 
 export default Landing

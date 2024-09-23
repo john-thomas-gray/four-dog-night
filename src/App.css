@@ -93,7 +93,7 @@ import SPACE from
 .start {
   display: flex;
   justify-content: center;
-  font-size: 1rem;
+  font-size: 3rem;
   cursor: pointer;
 }
 
@@ -120,13 +120,67 @@ import SPACE from
 .fieldOfPlay {
   display: flex;
   justify-content: center;
-  margin: 2rem;
+  align-items: center;
+  margin: 10rem;
 }
 
 .main {
   display: flex;
   justify-content: center;
   align-items: center;
+  background: linear-gradient(to bottom,
+                              #002A7D 25%,
+                              #8439A5 38%,
+                              #FF585B 54%,
+                              #9BC04A 67%,
+                              #3F7333 100%);
+}
+
+.landing-section {
+  height: 110vh; /* Set the Landing section height to fill the viewport */
+  display: flex;
+  justify-content: center; /* Horizontally center content */
+  align-items: center; /* Vertically center content */
+}
+
+.moon {
+  position: relative; /* Allows layering of elements */
+  width: 53rem;
+  height: 53rem;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.moon-background {
+  width: 100%;
+  height: 100%;
+  background: linear-gradient(125deg, #FCFFCF, #E1E6A3, #A3AB3E);
+  border-radius: 50%;
+  box-shadow: inset -101px 0px 11.7px -35px rgba(0, 0, 0, 0.25); /* Inner shadow */
+  filter: blur(2.5px); /* Apply blur to the background only */
+  position: absolute; /* Make sure it is positioned behind the text */
+  top: 0;
+  left: 0;
+}
+
+.moon-content {
+  position: relative; /* Keep the content (text) unblurred and above the background */
+  z-index: 1; /* Ensure the text is on top of the background */
+  text-align: center;
+  color: white; /* Adjust the color of the text if necessary */
+  font-family: 'IrishGrover', sans-serif;
+  stroke: black;
+  stroke-width: 11px;
+  font-size: 5rem;
+}
+
+.sunset {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  flex-direction: column;
+  margin: 10rem;
 }
 
 .boardMiddle {
@@ -161,4 +215,11 @@ import SPACE from
 
 .dark-space {
   background-color: #b58863; /* Dark color */
+}
+
+@font-face {
+  font-family: 'IrishGrover';
+  src: url('./assets/fonts/IrishGrover-Regular.ttf') format('truetype');
+  font-weight: normal;
+  font-style: normal;
 }

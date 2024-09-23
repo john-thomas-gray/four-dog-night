@@ -12,7 +12,7 @@ function Home() {
   };
 
   return (
-    <main>
+    <main className='main'>
         <div>
             <section id="landing">
                 <Landing scroll={scroll}/>
