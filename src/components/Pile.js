@@ -13,7 +13,7 @@ function Pile({ team, turn, onSelect }) {
   return (
     <div className="pile" onClick={handleClick}>
       <Piece team={team} />
-      <p>{team}</p>
+      <h2>{team === 'teamOne' ? 'Dog Pile One' : 'Dog Pile Two'}</h2>
     </div>
   );
 }
