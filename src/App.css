@@ -59,11 +59,11 @@ import SPACE from
 }
 
 .corner {
-  background-color: transparent;
+  background-color: green;
   display: flex;
   align-items: center;
   justify-content: center;
-  pointer-events: none;
+  /* pointer-events: none; */
 }
 
 .gravityButton {

@@ -13,10 +13,10 @@ function Game({ gameMode, scroll }) {
   const [board, setBoard] = useState(
     rows.map((cols) => Array(cols).fill(null))
   );
-  const [selectedTeam, setSelectedTeam] = useState(null); // The team currently "holding" the piece
+  const [heldPiece, setHeldPiece] = useState(null); // The team currently "holding" the piece
   const [cursorPosition, setCursorPosition] = useState({ x: 0, y: 0 });
   const [winner, setWinner] = useState(null);
-  const [turn, setTurn] = useState('teamOne');
+  const [turn, setTurn] = useState(1);
   const [toastMessage, setToastMessage] = useState('');
   const [showToast, setShowToast] = useState(false);
   const [isMenuOpen, setIsMenuOpen] = useState(false);
@@ -27,10 +27,10 @@ function Game({ gameMode, scroll }) {
 
   const resetGame = () => {
     setBoard(rows.map((cols) => Array(cols).fill(null)));
-    setSelectedTeam(null);
+    setHeldPiece(null);
     setCursorPosition({ x: 0, y: 0 });
     setWinner(null);
-    setTurn('teamOne');
+    setTurn(1);
     setToastMessage('');
     setShowToast(false);
     setIsMenuOpen(false);
@@ -41,23 +41,58 @@ function Game({ gameMode, scroll }) {
     scroll('landing');
   }
 
+  const rotateBoard = (direction) => {
+    const newBoard =
+      direction === 'clockwise'
+        ? board[0].map((_, colIndex) =>
+            board.map((row) => row[colIndex]).reverse()
+          )
+        : board[0].map((_, colIndex) =>
+            board.map((row) => row[row.length - 1 - colIndex])
+          );
+    setBoard(newBoard);
+  };
+
+  const rotateAction = (direction) => {
+
+    rotateBoard(direction);
+    handleTurnChange(turn); // End current player's turn after rotation
+
+  };
+
+  const handleCornerClick = (rowIndex, colIndex) => {
+    if (gameMode === 'fourPlayer') {
+      const isTopLeftCorner = rowIndex === 0 && colIndex === 0;
+      const isTopRightCorner = rowIndex === 0 && colIndex === board[rowIndex].length - 1;
+      const isBottomLeftCorner = rowIndex === board.length - 1 && colIndex === 0;
+      const isBottomRightCorner = rowIndex === board.length - 1 && colIndex === board[rowIndex].length - 1;
+
+      if (isTopLeftCorner || isBottomRightCorner) {
+        rotateAction('counterclockwise');
+      } else if (isTopRightCorner || isBottomLeftCorner) {
+        rotateAction('clockwise');
+      }
+    } else {
+      triggerToast('Rotation is only available in four-player mode.');
+    }
+  };
+
   const handleSelectPiece = (team) => {
-    if (selectedTeam) {
-      setSelectedTeam(null);
+    if (heldPiece) {
+      setHeldPiece(null);
     } else {
-      setSelectedTeam(team)
+      setHeldPiece(team)
     }
   };
 
-  const handleTurnChange = (turn) => {
-    if (turn === 'teamOne') {
-      setTurn('teamTwo');
-    } else {
-      setTurn('teamOne');
-    }
+  const handleTurnChange = () => {
+    setTurn((prevTurn) => (prevTurn === 4 ? 1 : prevTurn + 1));
   };
 
-  // Helper function to determine if a given cell is a Slot
+  const getCurrentTeam = () => {
+    return turn === 1 || turn === 3 ? 'teamOne' : 'teamTwo';
+  };
+
   const isSlot = (rowIndex, colIndex) => {
     const isCorner =
       (rowIndex === 0 || rowIndex === board.length - 1) &&
@@ -65,14 +100,13 @@ function Game({ gameMode, scroll }) {
 
     return (
       !isCorner && (
-        rowIndex === 0 || // Top row (excluding corners)
-        rowIndex === board.length - 1 || // Bottom row (excluding corners)
-        (rowIndex >= 1 && rowIndex <= 7 && (colIndex === 0 || colIndex === board[rowIndex].length - 1)) // First and last columns of rows 2-8
+        rowIndex === 0 ||
+        rowIndex === board.length - 1 ||
+        (rowIndex >= 1 && rowIndex <= 7 && (colIndex === 0 || colIndex === board[rowIndex].length - 1))
       )
     );
   };
 
-  // Prevent pieces from being placed in invisible slots or corners
   const isValidSlotForPlacement = (rowIndex, colIndex) => {
     const isCorner = (rowIndex === 0 || rowIndex === board.length - 1) && (colIndex === 0 || colIndex === board[rowIndex].length - 1);
     return !isCorner;
@@ -217,9 +251,8 @@ function Game({ gameMode, scroll }) {
     }, 2000); // Toast disappears after 2 seconds
   };
 
-  // Handle placing a piece on the board
   const handlePlacePiece = (rowIndex, colIndex) => {
-    if (selectedTeam && !winner) {
+    if (heldPiece && !winner) {
       if (!isValidSlotForPlacement(rowIndex, colIndex)) {
         return;
       }
@@ -233,12 +266,12 @@ function Game({ gameMode, scroll }) {
       if (board[destinationRow][destinationCol] === null) {
         const newBoard = board.map((row, rIdx) =>
           row.map((col, cIdx) =>
-            rIdx === destinationRow && cIdx === destinationCol ? selectedTeam : col
+            rIdx === destinationRow && cIdx === destinationCol ? heldPiece : col
           )
         );
         setBoard(newBoard);
         checkForWinner(newBoard, destinationRow, destinationCol);
-        setSelectedTeam(null); // Remove the "held" piece after placing it
+        setHeldPiece(null); // Remove the "held" piece after placing it
         handleTurnChange(turn);
       }
     }
@@ -313,7 +346,10 @@ function Game({ gameMode, scroll }) {
     <>
         <div className="fieldOfPlay" style={isMenuOpen ? { filter: 'brightness(50%)' } : {}}>
             <div className='pile'>
-              <Pile team="teamOne" turn={turn} onSelect={() => handleSelectPiece('teamOne')} />
+              <Pile
+                team="teamOne"
+                turn={turn}
+                onSelect={() => handleSelectPiece('teamOne')} />
             </div>
             <div className="board">
               <div className="top-gravity-button">
@@ -324,14 +360,9 @@ function Game({ gameMode, scroll }) {
                   <button onClick={() => shiftGravity('left')}>Move Left</button>
                 </div>
                 <Board
-                  board={board.map((row, rowIndex) =>
-                    row.map((col, colIndex) => {
-                      const isCorner = (rowIndex === 0 || rowIndex === board.length - 1) && (colIndex === 0 || colIndex === board[rowIndex].length - 1);
-                      // Render Corner for corners, otherwise allow normal slots/spaces
-                      return isCorner ? <Corner key={`${rowIndex}-${colIndex}`} /> : col;
-                    })
-                  )}
+                  board={board}
                   onPlacePiece={handlePlacePiece}
+                  onCornerClick={handleCornerClick}
                 />
                 <div className='right-gravity-button'>
                   <button onClick={() => shiftGravity('right')}>Move Right</button>
@@ -342,12 +373,16 @@ function Game({ gameMode, scroll }) {
               </div>
             </div>
             <div className='pile'>
-              <Pile team="teamTwo" turn={turn} onSelect={() => handleSelectPiece('teamTwo')} />
+              <Pile
+                team="teamTwo"
+                turn={turn}
+                onSelect={() => handleSelectPiece('teamTwo')} />
             </div>
 
           {winner && <div className="winner-message">{winner} wins!</div>}
           {/* Display Toast */}
           <Toast message={toastMessage} show={showToast} />
+
 
       </div>
       <GearButton onClick={toggleMenu} />
@@ -355,7 +390,7 @@ function Game({ gameMode, scroll }) {
       {isMenuOpen && <Menu onClose={toggleMenu} onQuit={handleQuit} onRestart={resetGame} />}
 
       {/* Piece following the cursor when picked */}
-      {selectedTeam && (
+      {heldPiece && (
         <div
           className="floating-piece"
           style={{
@@ -366,7 +401,7 @@ function Game({ gameMode, scroll }) {
             transform: 'translate(-50%, -50%)' // Center the piece on the cursor
           }}
         >
-          <Piece team={selectedTeam} />
+          <Piece team={heldPiece} />
         </div>
       )}
     </>
