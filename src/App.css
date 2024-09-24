@@ -90,13 +90,6 @@ import SPACE from
   background-color: darkgoldenrod;
 }
 
-.start {
-  display: flex;
-  justify-content: center;
-  font-size: 3rem;
-  cursor: pointer;
-}
-
 .title {
   display: flex;
   justify-content: center;
@@ -137,10 +130,9 @@ import SPACE from
 }
 
 .landing-section {
-  height: 110vh; /* Set the Landing section height to fill the viewport */
+  height: 110vh;
   display: flex;
-  justify-content: center; /* Horizontally center content */
-  align-items: center; /* Vertically center content */
+  justify-content: center;
 }
 
 .moon {
@@ -150,6 +142,7 @@ import SPACE from
   display: flex;
   justify-content: center;
   align-items: center;
+  margin-top: 3rem;
 }
 
 .moon-background {
@@ -165,17 +158,31 @@ import SPACE from
 }
 
 .moon-content {
-  position: relative; /* Keep the content (text) unblurred and above the background */
-  z-index: 1; /* Ensure the text is on top of the background */
+  position: relative;
+  z-index: 1;
+  font-family: 'IrishGrover', sans-serif;
+  color: white;
 
+}
+
+.start {
+  display: flex;
+  justify-content: center;
+  font-size: 3rem;
+  cursor: pointer;
+  -webkit-text-stroke: .01rem black;
+  text-shadow: 5px 5px 5px rgba(0, 0, 0, 0.5);
+  margin-top: 0.5rem;
 }
 
 .main-title {
   text-align: center;
-  color: white; /* Adjust the color of the text if necessary */
+  color: white;
   font-family: 'IrishGrover', sans-serif;
-  font-size: 8rem;
-  -webkit-text-stroke: .25rem black;
+  font-size: 9rem;
+  -webkit-text-stroke: .13rem black;
+  text-shadow: 10px 15px 5px rgba(0, 0, 0, 0.5);
+  margin-bottom: 5rem;
 }
 
 .sunset {
@@ -184,6 +191,7 @@ import SPACE from
   align-items: center;
   flex-direction: column;
   margin: 10rem;
+  height: 75vh;
 }
 
 .boardMiddle {
@@ -213,11 +221,11 @@ import SPACE from
 }
 
 .light-space {
-  background-color: #f0d9b5; /* Light color */
+  background-color: #f0d9b5;
 }
 
 .dark-space {
-  background-color: #b58863; /* Dark color */
+  background-color: #b58863;
 }
 
 @font-face {
@@ -225,4 +233,8 @@ import SPACE from
   src: url('./assets/fonts/IrishGrover-Regular.ttf') format('truetype');
   font-weight: normal;
   font-style: normal;
+}
+
+body {
+  overflow: hidden;
 }

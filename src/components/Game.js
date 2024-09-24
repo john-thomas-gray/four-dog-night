@@ -4,13 +4,11 @@ import Pile from './Pile';
 import Piece from './Piece';
 import Toast from './Toast';
 import Corner from './Corner';
+import GearButton from './GearButton';
+import Menu from './Menu';
 
-function Game() {
-  const rows = [
-    9, // 1st row: 9 spaces (7 visible, 2 invisible corners)
-    9, 9, 9, 9, 9, 9, 9, // Middle rows: 9 spaces
-    9  // Last row: 9 spaces (7 visible, 2 invisible corners)
-  ];
+function Game({ gameMode, scroll }) {
+  const rows = [9, 9, 9, 9, 9, 9, 9, 9, 9];
 
   const [board, setBoard] = useState(
     rows.map((cols) => Array(cols).fill(null))
@@ -21,8 +19,28 @@ function Game() {
   const [turn, setTurn] = useState('teamOne');
   const [toastMessage, setToastMessage] = useState('');
   const [showToast, setShowToast] = useState(false);
+  const [isMenuOpen, setIsMenuOpen] = useState(false);
 
-  // Handle selecting a piece from the pile
+  const toggleMenu = () => {
+    setIsMenuOpen(!isMenuOpen);
+  };
+
+  const resetGame = () => {
+    setBoard(rows.map((cols) => Array(cols).fill(null)));
+    setSelectedTeam(null);
+    setCursorPosition({ x: 0, y: 0 });
+    setWinner(null);
+    setTurn('teamOne');
+    setToastMessage('');
+    setShowToast(false);
+    setIsMenuOpen(false);
+  };
+
+  const handleQuit = () => {
+    resetGame();
+    scroll('landing');
+  }
+
   const handleSelectPiece = (team) => {
     if (selectedTeam) {
       setSelectedTeam(null);
@@ -226,7 +244,6 @@ function Game() {
     }
   };
 
-  // Function to check for a winner
   const checkForWinner = (board, row, col) => {
     const directions = [
       { x: 0, y: 1 },  // Horizontal
@@ -294,7 +311,7 @@ function Game() {
 
   return (
     <>
-        <div className="fieldOfPlay">
+        <div className="fieldOfPlay" style={isMenuOpen ? { filter: 'brightness(50%)' } : {}}>
             <div className='pile'>
               <Pile team="teamOne" turn={turn} onSelect={() => handleSelectPiece('teamOne')} />
             </div>
@@ -333,6 +350,9 @@ function Game() {
           <Toast message={toastMessage} show={showToast} />
 
       </div>
+      <GearButton onClick={toggleMenu} />
+
+      {isMenuOpen && <Menu onClose={toggleMenu} onQuit={handleQuit} onRestart={resetGame} />}
 
       {/* Piece following the cursor when picked */}
       {selectedTeam && (
