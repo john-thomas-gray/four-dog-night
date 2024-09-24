@@ -51,12 +51,12 @@ import SPACE from
 }
 
 .space {
-  background-color: lightgray;
+  background: linear-gradient(to bottom, #ded39f 1%, #f7cc0e 80%, #7d6600 99%);
   display: flex;
   align-items: center;
   justify-content: center;
-
 }
+
 
 .corner {
   background-color: green;
@@ -114,7 +114,7 @@ import SPACE from
   display: flex;
   justify-content: center;
   align-items: center;
-  margin: 10rem;
+  margin: 5rem;
 }
 
 .main {
@@ -122,10 +122,10 @@ import SPACE from
   justify-content: center;
   align-items: center;
   background: linear-gradient(to bottom,
-                              #002A7D 25%,
-                              #8439A5 38%,
-                              #FF585B 54%,
-                              #9BC04A 67%,
+                              #002A7D 22%,
+                              #8439A5 30%,
+                              #FF585B 59%,
+                              #9BC04A 75%,
                               #3F7333 100%);
 }
 
@@ -218,14 +218,6 @@ import SPACE from
   display: flex;
   justify-content: center;
   margin-top: 1rem;
-}
-
-.light-space {
-  background-color: #f0d9b5;
-}
-
-.dark-space {
-  background-color: #b58863;
 }
 
 @font-face {

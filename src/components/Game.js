@@ -21,6 +21,16 @@ function Game({ gameMode, scroll }) {
   const [showToast, setShowToast] = useState(false);
   const [isMenuOpen, setIsMenuOpen] = useState(false);
 
+  const playerSides = gameMode === 'fourPlayer' ? {
+    1: 'south',
+    2: 'west',
+    3: 'north',
+    4: 'east',
+  } : {
+    1: 'any', // In two-player mode, players can drop from any side
+    2: 'any',
+  };
+
   const toggleMenu = () => {
     setIsMenuOpen(!isMenuOpen);
   };
@@ -42,6 +52,7 @@ function Game({ gameMode, scroll }) {
   }
 
   const rotateBoard = (direction) => {
+    setHeldPiece(null);
     const newBoard =
       direction === 'clockwise'
         ? board[0].map((_, colIndex) =>
@@ -107,9 +118,26 @@ function Game({ gameMode, scroll }) {
     );
   };
 
+  // Updated isValidSlotForPlacement function
   const isValidSlotForPlacement = (rowIndex, colIndex) => {
-    const isCorner = (rowIndex === 0 || rowIndex === board.length - 1) && (colIndex === 0 || colIndex === board[rowIndex].length - 1);
-    return !isCorner;
+    const side = playerSides[turn];
+
+    // In two-player mode, players can drop from any side
+    if (side === 'any') {
+      return isSlot(rowIndex, colIndex);
+    }
+
+    // In four-player mode, restrict to player's side
+    if (side === 'north' && rowIndex === 0) {
+      return true;
+    } else if (side === 'south' && rowIndex === board.length - 1) {
+      return true;
+    } else if (side === 'west' && colIndex === 0) {
+      return true;
+    } else if (side === 'east' && colIndex === board[0].length - 1) {
+      return true;
+    }
+    return false;
   };
 
   // Calculate the final destination for a piece placed in a slot, stopping at slots or occupied spaces
@@ -166,8 +194,25 @@ function Game({ gameMode, scroll }) {
   };
 
   const shiftGravity = (direction) => {
+
     const newBoard = [...board];
     const positionsToCheck = []; // To track the positions of moved pieces
+    const side = playerSides[turn];
+
+    if (gameMode === 'fourPlayer') {
+      const allowedDirection = {
+        north: 'up',
+        south: 'down',
+        west: 'left',
+        east: 'right',
+      }[side];
+
+      if (direction !== allowedDirection) {
+        triggerToast('You can only shift gravity towards your own side!');
+        return;
+      }
+    }
+
 
     if (direction === 'up') {
       for (let col = 0; col < newBoard[0].length; col++) {
@@ -230,7 +275,7 @@ function Game({ gameMode, scroll }) {
         }
       }
     }
-
+    setHeldPiece(null);
     setBoard(newBoard);
 
     // Check for winners at the positions where pieces were moved
@@ -254,6 +299,7 @@ function Game({ gameMode, scroll }) {
   const handlePlacePiece = (rowIndex, colIndex) => {
     if (heldPiece && !winner) {
       if (!isValidSlotForPlacement(rowIndex, colIndex)) {
+        triggerToast('You can only place pieces from your side!');
         return;
       }
 
