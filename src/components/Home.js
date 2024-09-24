@@ -5,6 +5,9 @@ import Sunset from './Sunset'
 
 function Home() {
   const [gameMode, setGameMode] = useState(null);
+  const [fadeButtons, setFadeButtons] = useState(false);
+  const [fadeTitle, setFadeTitle] = useState(false);
+
   const scroll = (id) => {
     const element = document.getElementById(id);
     if (element) {
@@ -34,13 +37,25 @@ function Home() {
     <main className='main'>
         <div>
             <section id="landing">
-                <Landing scroll={scroll} setGameMode={setGameMode}/>
+                <Landing
+                  scroll={scroll}
+                  setGameMode={setGameMode}
+                  setFadeButtons={setFadeButtons}
+                  setFadeTitle={setFadeTitle}
+                  fadeButtons={fadeButtons}
+                  fadeTitle={fadeTitle}
+                  />
             </section>
             <section id="sunset">
                 <Sunset/>
             </section>
             <section id="game">
-                <Game gameMode={gameMode} scroll={scroll}/>
+                <Game
+                  gameMode={gameMode}
+                  scroll={scroll}
+                  setFadeButtons={setFadeButtons}
+                  setFadeTitle={setFadeTitle}
+                  />
             </section>
 
         </div>

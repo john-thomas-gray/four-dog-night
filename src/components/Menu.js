@@ -4,13 +4,12 @@ function Menu({ onClose, onQuit, onRestart }) {
   return (
     <div style={menuOverlayStyle}>
       <div style={menuContentStyle}>
+        <button onClick={onClose} style={closeButtonStyle}>✕</button> {/* "X" button */}
         <h2>Paws</h2>
         <div style={{ display: 'flex', flexDirection: 'column' }}>
           <button onClick={onRestart} style={buttonStyle}>Start Over</button>
-          <button onClick={onQuit} style={buttonStyle}>Main Menu</button>
-          <button onClick={onClose} style={buttonStyle}>Close</button>
+          <button onClick={onQuit} style={buttonStyle}>Quit</button>
         </div>
-
       </div>
     </div>
   );
@@ -36,12 +35,24 @@ const menuContentStyle = {
   borderRadius: '10px',
   width: '300px',
   textAlign: 'center',
+  position: 'relative',
 };
 
 const buttonStyle = {
   marginTop: '10px',
   padding: '10px 20px',
   fontSize: '16px',
+};
+
+// Style for the "X" close button in the top right corner
+const closeButtonStyle = {
+  position: 'absolute',
+  top: '10px',
+  right: '10px',
+  background: 'none',
+  border: 'none',
+  fontSize: '20px',
+  cursor: 'pointer',
 };
 
 export default Menu;

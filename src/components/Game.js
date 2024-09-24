@@ -7,7 +7,7 @@ import Corner from './Corner';
 import GearButton from './GearButton';
 import Menu from './Menu';
 
-function Game({ gameMode, scroll }) {
+function Game({ gameMode, scroll, setFadeButtons, setFadeTitle}) {
   const rows = [9, 9, 9, 9, 9, 9, 9, 9, 9];
 
   const [board, setBoard] = useState(
@@ -21,13 +21,14 @@ function Game({ gameMode, scroll }) {
   const [showToast, setShowToast] = useState(false);
   const [isMenuOpen, setIsMenuOpen] = useState(false);
 
+
   const playerSides = gameMode === 'fourPlayer' ? {
     1: 'south',
     2: 'west',
     3: 'north',
     4: 'east',
   } : {
-    1: 'any', // In two-player mode, players can drop from any side
+    1: 'any',
     2: 'any',
   };
 
@@ -36,6 +37,7 @@ function Game({ gameMode, scroll }) {
   };
 
   const resetGame = () => {
+    toggleMenu();
     setBoard(rows.map((cols) => Array(cols).fill(null)));
     setHeldPiece(null);
     setCursorPosition({ x: 0, y: 0 });
@@ -47,9 +49,18 @@ function Game({ gameMode, scroll }) {
   };
 
   const handleQuit = () => {
-    resetGame();
+
+    toggleMenu();
     scroll('landing');
-  }
+
+    setTimeout(() => {
+      setFadeButtons(false);
+      setFadeTitle(false);
+      setTimeout(() => {
+        resetGame();
+      }, 1000);
+    }, 3500);
+  };
 
   const rotateBoard = (direction) => {
     setHeldPiece(null);
@@ -97,11 +108,11 @@ function Game({ gameMode, scroll }) {
   };
 
   const handleTurnChange = () => {
-    setTurn((prevTurn) => (prevTurn === 4 ? 1 : prevTurn + 1));
-  };
-
-  const getCurrentTeam = () => {
-    return turn === 1 || turn === 3 ? 'teamOne' : 'teamTwo';
+    if (gameMode === 'fourPlayer') {
+      setTurn((prevTurn) => (prevTurn === 4 ? 1 : prevTurn + 1)); // Cycle between 1 to 4 in four-player mode
+    } else {
+      setTurn((prevTurn) => (prevTurn === 2 ? 1 : prevTurn + 1)); // Cycle between 1 and 2 in two-player mode
+    }
   };
 
   const isSlot = (rowIndex, colIndex) => {
@@ -376,7 +387,6 @@ function Game({ gameMode, scroll }) {
     return count >= 4;  // Return true if there are 4 or more in a row
   };
 
-  // Update cursor position
   useEffect(() => {
     const handleMouseMove = (event) => {
       setCursorPosition({ x: event.clientX, y: event.clientY });
@@ -399,11 +409,11 @@ function Game({ gameMode, scroll }) {
             </div>
             <div className="board">
               <div className="top-gravity-button">
-                <button onClick={() => shiftGravity('up')}>Move Up</button>
+                <button onClick={() => shiftGravity('up')}>Pull</button>
               </div>
               <div className="boardMiddle">
                 <div className='left-gravity-button'>
-                  <button onClick={() => shiftGravity('left')}>Move Left</button>
+                  <button onClick={() => shiftGravity('left')}>Pull</button>
                 </div>
                 <Board
                   board={board}
@@ -411,11 +421,11 @@ function Game({ gameMode, scroll }) {
                   onCornerClick={handleCornerClick}
                 />
                 <div className='right-gravity-button'>
-                  <button onClick={() => shiftGravity('right')}>Move Right</button>
+                  <button onClick={() => shiftGravity('right')}>Pull</button>
                 </div>
               </div>
               <div className='bottom-gravity-button'>
-                <button onClick={() => shiftGravity('down')}>Move Down</button>
+                <button onClick={() => shiftGravity('down')}>Pull</button>
               </div>
             </div>
             <div className='pile'>

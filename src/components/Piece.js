@@ -1,19 +1,26 @@
 import React from 'react';
+import teamOneDog from '../images/teamOneDog.png';
+import teamTwoDog from '../images/teamTwoDog.png';
+// import defaultDog from '../images/defaultDog.png';
+
+
 
 function Piece({ team }) {
-  const getStyle = () => {
-    if (team === 'teamOne') return { backgroundColor: 'blue' };
-    if (team === 'teamTwo') return { backgroundColor: 'red' };
-    return {};
+  const getImageSrc = () => {
+    if (team === 'teamOne') return teamOneDog;
+    if (team === 'teamTwo') return teamTwoDog;
+
   };
 
   return (
     <div
       style={{
-        width: '40px',
-        height: '40px',
-        borderRadius: '50%',
-        ...getStyle()
+        width: '50px',
+        height: '50px',
+        // borderRadius: '50%',
+        backgroundImage: `url(${getImageSrc()})`,
+        backgroundSize: 'cover',
+        backgroundPosition: 'center',
       }}
     />
   );
