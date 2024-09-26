@@ -1,4 +1,4 @@
-import React, { useState } from 'react'
+import React, { useState, useEffect } from 'react'
 import Game from './Game'
 import Landing from './Landing'
 import Sunset from './Sunset'
@@ -32,6 +32,19 @@ function Home() {
       });
     }
   };
+
+  useEffect(() => {
+    if ('scrollRestoration' in window.history) {
+      window.history.scrollRestoration = 'manual';
+    }
+    const landingSection = document.getElementById('landing');
+    if (landingSection) {
+      window.scrollTo({
+        top: landingSection.offsetTop,
+        behavior: 'auto'
+      });
+    }
+  }, []);
 
   return (
     <main className='main'>

@@ -446,25 +446,25 @@ function Game({ gameMode, scroll, setFadeButtons, setFadeTitle}) {
 
 
       </div>
-      <GearButton onClick={toggleMenu} />
 
       {isMenuOpen && <Menu onClose={toggleMenu} onQuit={handleQuit} onRestart={resetGame} />}
 
       {/* Piece following the cursor when picked */}
       {heldPiece && (
         <div
-          className="floating-piece"
-          style={{
-            position: 'fixed',
-            left: cursorPosition.x,
-            top: cursorPosition.y,
-            pointerEvents: 'none', // Prevents interference with other elements
-            transform: 'translate(-50%, -50%)' // Center the piece on the cursor
-          }}
+        className="floating-piece"
+        style={{
+          position: 'fixed',
+          left: cursorPosition.x,
+          top: cursorPosition.y,
+          pointerEvents: 'none', // Prevents interference with other elements
+          transform: 'translate(-50%, -50%)' // Center the piece on the cursor
+        }}
         >
           <Piece team={heldPiece} />
         </div>
       )}
+      <GearButton onClick={toggleMenu} />
     </>
   );
 }

@@ -26,7 +26,7 @@ function Corner({ onClick, cornerPosition, isActive }) {
 
   return (
     <div
-      className={`corner ${isActive ? 'active' : 'inactive'}`}
+      className={`corner ${isActive ? '' : 'inactive'}`}
       onClick={isActive ? onClick : null} // Disable onClick if inactive
       style={{
         width: SPACE.size,
