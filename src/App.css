@@ -1,5 +1,3 @@
-import SPACE from
-
 .App {
   text-align: center;
 }
@@ -93,8 +91,20 @@ import SPACE from
   cursor: pointer;
 }
 
+.active {
+  animation: pulse 2s infinite;
+}
+
+.inactive {
+  opacity: 0.2;
+}
+
 .slot:hover {
   background-color: darkgoldenrod;
+}
+
+.blocked {
+  animation: none;
 }
 
 
@@ -140,11 +150,11 @@ import SPACE from
   justify-content: center;
   align-items: center;
   background: linear-gradient(to bottom,
-                              #002A7D 22%,
-                              #8439A5 33%,
+                              #002A7D 20%,
+                              #8439A5 39%,
                               #FF585B 60%,
-                              #6cdfff 75%,
-                              #9BC04A 80%,
+                              #ff7433 65%,
+                              #9BC04A 66%,
                               #3F7333 100%);
 }
 
@@ -219,7 +229,7 @@ import SPACE from
   align-items: center;
   flex-direction: column;
   margin: 10rem;
-  height: 75vh;
+  height: 50vh;
 }
 
 .boardMiddle {
@@ -228,21 +238,21 @@ import SPACE from
   align-items: center;
 }
 
-.left-gravity-button {
+.west-gravity-button {
   margin-right: 1rem;
 }
 
-.right-gravity-button {
+.east-gravity-button {
   margin-left: 1rem;
 }
 
-.top-gravity-button {
+.north-gravity-button {
   display: flex;
   justify-content: center;
   margin-bottom: 1rem;
 }
 
-.bottom-gravity-button {
+.south-gravity-button {
   display: flex;
   justify-content: center;
   margin-top: 1rem;
@@ -264,4 +274,20 @@ import SPACE from
 
 body {
   overflow: hidden;
+}
+
+.transparent {
+  opacity: 0.2;
+}
+
+@keyframes pulse {
+  0% {
+    transform: scale(1);
+  }
+  50% {
+    transform: scale(1.3);
+  }
+  100% {
+    transform: scale(1);
+  }
 }

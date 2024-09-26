@@ -4,16 +4,33 @@ import Slot from './Slot';
 import Piece from './Piece';
 import Corner from './Corner';
 
-function Board({ board, onPlacePiece, onCornerClick }) {
+function Board({ board, onPlacePiece, onCornerClick, isCurrentTurnSlot, gameMode }) {
+  // Function to determine if a slot is blocked
+  const isSlotBlocked = (rowIndex, colIndex) => {
+    if (rowIndex === 0) {
+      // Top slot: blocked if the space below is occupied
+      return board[1][colIndex] !== null;
+    } else if (rowIndex === board.length - 1) {
+      // Bottom slot: blocked if the space above is occupied
+      return board[board.length - 2][colIndex] !== null;
+    } else if (colIndex === 0) {
+      // Left slot: blocked if the space to the right is occupied
+      return board[rowIndex][1] !== null;
+    } else if (colIndex === board[rowIndex].length - 1) {
+      // Right slot: blocked if the space to the left is occupied
+      return board[rowIndex][board[rowIndex].length - 2] !== null;
+    }
+    return false;
+  };
+
   return (
     <div className="board">
       {board.map((row, rowIndex) => (
         <div
           key={rowIndex}
-          className={`board-row ${row.length === 7 ? 'centered-row' : ''}`} // Centered rows
+          className={`board-row ${row.length === 7 ? 'centered-row' : ''}`}
         >
           {row.map((col, colIndex) => {
-            // Determine if the current space is a Slot
             const isSlot =
               rowIndex === 0 ||
               rowIndex === board.length - 1 ||
@@ -21,43 +38,49 @@ function Board({ board, onPlacePiece, onCornerClick }) {
                 rowIndex <= 7 &&
                 (colIndex === 0 || colIndex === row.length - 1));
 
-            // Determine if the current space is a Corner
             const isCorner =
               (rowIndex === 0 || rowIndex === board.length - 1) &&
               (colIndex === 0 || colIndex === row.length - 1);
 
-            // Determine the rotation for the slot based on its position
-            let slotRotation = '0deg'; // Default is no rotation (west side)
-            if (rowIndex === 0) {
-              slotRotation = '90deg'; // Rotate slots in the north (top) 90 degrees
-            } else if (rowIndex === board.length - 1) {
-              slotRotation = '-90deg'; // Rotate slots in the south (bottom) -90 degrees
-            } else if (colIndex === row.length - 1) {
-              slotRotation = '180deg'; // Rotate slots on the east (right side) 180 degrees
-            }
-
-            // Determine the transformation for corner
-            let cornerTransform = 'none';
+            let cornerPosition = '';
             if (rowIndex === 0 && colIndex === 0) {
-              cornerTransform = 'scale(-1,1)'; // Invert top-left corner vertically
+              cornerPosition = 'NW';
+            } else if (rowIndex === 0 && colIndex === row.length - 1) {
+              cornerPosition = 'NE';
             } else if (rowIndex === board.length - 1 && colIndex === 0) {
-              cornerTransform = 'rotate(180deg)'; // Rotate bottom-left corner 180 degrees
+              cornerPosition = 'SW';
             } else if (rowIndex === board.length - 1 && colIndex === row.length - 1) {
-              cornerTransform = 'scaleX(-1) rotate(180deg)'; // Invert bottom-right corner horizontally
+              cornerPosition = 'SE';
             }
 
-            // Render Corner if it's a corner, Slot if it's a slot, otherwise render Space
+            let slotPosition = 'west';
+            if (rowIndex === 0) {
+              slotPosition = 'north';
+            } else if (rowIndex === board.length - 1) {
+              slotPosition = 'south';
+            } else if (colIndex === row.length - 1) {
+              slotPosition = 'east';
+            }
+
+            const isValid = isSlot && isCurrentTurnSlot(rowIndex, colIndex);
+
+            // Determine if the slot is blocked
+            const isBlocked = isSlot && isSlotBlocked(rowIndex, colIndex);
+
             return isCorner ? (
               <Corner
                 key={`${rowIndex}-${colIndex}`}
                 onClick={() => onCornerClick(rowIndex, colIndex)}
-                transform={cornerTransform} // Pass the transformation to Corner
+                cornerPosition={cornerPosition}
+                isActive={gameMode === 'fourPlayer'} // Set isActive based on gameMode
               />
             ) : isSlot ? (
               <Slot
                 key={`${rowIndex}-${colIndex}`}
                 onClick={() => onPlacePiece(rowIndex, colIndex)}
-                rotation={slotRotation} // Pass rotation value to Slot
+                position={slotPosition}
+                isValid={isValid}
+                isBlocked={isBlocked} // Pass the isBlocked prop
               >
                 {board[rowIndex][colIndex] && (
                   <Piece team={board[rowIndex][colIndex]} />

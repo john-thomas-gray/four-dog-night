@@ -3,7 +3,6 @@ import Board from './Board';
 import Pile from './Pile';
 import Piece from './Piece';
 import Toast from './Toast';
-import Corner from './Corner';
 import GearButton from './GearButton';
 import Menu from './Menu';
 
@@ -13,7 +12,7 @@ function Game({ gameMode, scroll, setFadeButtons, setFadeTitle}) {
   const [board, setBoard] = useState(
     rows.map((cols) => Array(cols).fill(null))
   );
-  const [heldPiece, setHeldPiece] = useState(null); // The team currently "holding" the piece
+  const [heldPiece, setHeldPiece] = useState(null);
   const [cursorPosition, setCursorPosition] = useState({ x: 0, y: 0 });
   const [winner, setWinner] = useState(null);
   const [turn, setTurn] = useState(1);
@@ -32,9 +31,16 @@ function Game({ gameMode, scroll, setFadeButtons, setFadeTitle}) {
     2: 'any',
   };
 
+  const isCurrentPlayerTurn = (side) => {
+    if (gameMode === 'twoPlayer') {
+      return true;
+    }
+    return playerSides[turn] === side;
+  }
   const toggleMenu = () => {
     setIsMenuOpen(!isMenuOpen);
   };
+
 
   const resetGame = () => {
     toggleMenu();
@@ -129,16 +135,13 @@ function Game({ gameMode, scroll, setFadeButtons, setFadeTitle}) {
     );
   };
 
-  // Updated isValidSlotForPlacement function
-  const isValidSlotForPlacement = (rowIndex, colIndex) => {
+  const isCurrentTurnSlot = (rowIndex, colIndex) => {
     const side = playerSides[turn];
 
-    // In two-player mode, players can drop from any side
     if (side === 'any') {
       return isSlot(rowIndex, colIndex);
     }
 
-    // In four-player mode, restrict to player's side
     if (side === 'north' && rowIndex === 0) {
       return true;
     } else if (side === 'south' && rowIndex === board.length - 1) {
@@ -309,7 +312,7 @@ function Game({ gameMode, scroll, setFadeButtons, setFadeTitle}) {
 
   const handlePlacePiece = (rowIndex, colIndex) => {
     if (heldPiece && !winner) {
-      if (!isValidSlotForPlacement(rowIndex, colIndex)) {
+      if (!isCurrentTurnSlot(rowIndex, colIndex)) {
         triggerToast('You can only place pieces from your side!');
         return;
       }
@@ -408,23 +411,25 @@ function Game({ gameMode, scroll, setFadeButtons, setFadeTitle}) {
                 onSelect={() => handleSelectPiece('teamOne')} />
             </div>
             <div className="board">
-              <div className="top-gravity-button">
+              <div className="north-gravity-button" style={{ visibility: isCurrentPlayerTurn('north') ? 'visible' : 'hidden' }}>
                 <button onClick={() => shiftGravity('up')}>Pull</button>
               </div>
               <div className="boardMiddle">
-                <div className='left-gravity-button'>
+                <div className='west-gravity-button' style={{ visibility: isCurrentPlayerTurn('west') ? 'visible' : 'hidden' }}>
                   <button onClick={() => shiftGravity('left')}>Pull</button>
                 </div>
                 <Board
                   board={board}
                   onPlacePiece={handlePlacePiece}
                   onCornerClick={handleCornerClick}
+                  isCurrentTurnSlot={isCurrentTurnSlot}
+                  gameMode={gameMode}
                 />
-                <div className='right-gravity-button'>
+                <div className='east-gravity-button' style={{ visibility: isCurrentPlayerTurn('east') ? 'visible' : 'hidden'}}>
                   <button onClick={() => shiftGravity('right')}>Pull</button>
                 </div>
               </div>
-              <div className='bottom-gravity-button'>
+              <div className='south-gravity-button' style={{ visibility: isCurrentPlayerTurn('south') ? 'visible' : 'hidden'}}>
                 <button onClick={() => shiftGravity('down')}>Pull</button>
               </div>
             </div>
