@@ -4,6 +4,7 @@ import slotArrowSouth from '../images/slot-arrow-south.png';
 import slotArrowEast from '../images/slot-arrow-east.png';
 import slotArrowWest from '../images/slot-arrow-west.png';
 import blocked from '../images/blocked.png';
+import { SPACE } from '../config.js/space';
 
 function Slot({ onClick, children, position, isValid, isBlocked }) {
   const [isHovered, setIsHovered] = useState(false);
@@ -49,8 +50,8 @@ function Slot({ onClick, children, position, isValid, isBlocked }) {
       onMouseEnter={handleMouseEnter}
       onMouseLeave={handleMouseLeave}
       style={{
-        width: '60px', // Example size
-        height: '60px', // Example size
+        width: SPACE.size,
+        height: SPACE.size,
         border: '1px solid transparent',
         backgroundImage: `url(${arrowImage})`,
         backgroundSize: '65%',

@@ -1,4 +1,5 @@
 import React from 'react';
+import dogSleep from '../images/dog-sleep.png';
 
 function WinnerMessage({ onClose, onQuit, onRestart, winner }) {
   return (
@@ -6,6 +7,11 @@ function WinnerMessage({ onClose, onQuit, onRestart, winner }) {
       <div style={messageContentStyle}>
         <button onClick={onClose} style={closeButtonStyle}>✕</button> {/* "X" button */}
         <h2>{winner === 'Tie' ? "It's a Tie!" : `${winner} wins!`}</h2>
+        <img
+          src={dogSleep}
+          alt="Sleeping Dog"
+          style={imageStyle}  // Apply the style to adjust the size
+        />
         <div style={{ display: 'flex', flexDirection: 'column' }}>
         </div>
       </div>
@@ -25,7 +31,7 @@ const messageOverlayStyle = {
 
 const messageContentStyle = {
   position: 'absolute',
-  top: '14%', // Adjust to position it in the top third of the page
+  top: '10%', // Adjust to position it in the top third of the page
   left: '50%',
   transform: 'translate(-50%, -30%)', // Center the message horizontally and vertically
   backgroundColor: '#fff',
@@ -35,10 +41,10 @@ const messageContentStyle = {
   textAlign: 'center',
 };
 
-const buttonStyle = {
-  marginTop: '10px',
-  padding: '10px 20px',
-  fontSize: '16px',
+const imageStyle = {
+  width: '150px',  // Set the width to make the image small
+  height: 'auto',  // Maintain aspect ratio
+  marginTop: '10px',  // Add some space between the h2 and the image
 };
 
 const closeButtonStyle = {

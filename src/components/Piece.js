@@ -5,6 +5,7 @@ import teamTwoDog from '../images/teamTwoDog.png';
 
 
 
+
 function Piece({ team }) {
   const getImageSrc = () => {
     if (team === 'teamOne') return teamOneDog;
@@ -15,8 +16,8 @@ function Piece({ team }) {
   return (
     <div
       style={{
-        width: '50px',
-        height: '50px',
+        width: '70px',
+        height: '70px',
         // borderRadius: '50%',
         backgroundImage: `url(${getImageSrc()})`,
         backgroundSize: 'cover',
