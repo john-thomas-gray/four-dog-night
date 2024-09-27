@@ -99,10 +99,6 @@
   opacity: 0.2;
 }
 
-.slot:hover {
-  background-color: darkgoldenrod;
-}
-
 .blocked {
   animation: none;
 }

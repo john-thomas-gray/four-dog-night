@@ -5,6 +5,7 @@ import Piece from './Piece';
 import Toast from './Toast';
 import GearButton from './GearButton';
 import Menu from './Menu';
+import WinnerMessage from './WinnerMessage';
 
 function Game({ gameMode, scroll, setFadeButtons, setFadeTitle}) {
   const rows = [9, 9, 9, 9, 9, 9, 9, 9, 9];
@@ -331,13 +332,13 @@ function Game({ gameMode, scroll, setFadeButtons, setFadeTitle}) {
         );
         setBoard(newBoard);
         checkForWinner(newBoard, destinationRow, destinationCol);
-        setHeldPiece(null); // Remove the "held" piece after placing it
+        setHeldPiece(null);
         handleTurnChange(turn);
       }
     }
   };
 
-  const checkForWinner = (board, row, col) => {
+  const checkForWinner = (board) => {
     const directions = [
       { x: 0, y: 1 },  // Horizontal
       { x: 1, y: 0 },  // Vertical
@@ -345,32 +346,61 @@ function Game({ gameMode, scroll, setFadeButtons, setFadeTitle}) {
       { x: 1, y: -1 }  // Diagonal (down-left)
     ];
 
-    for (let direction of directions) {
-      if (checkDirection(board, row, col, direction.x, direction.y)) {
-        setWinner(board[row][col]);
-        return;
+    let player1HasWon = false;
+    let player2HasWon = false;
+
+    // Loop through the entire board to check if both players win simultaneously
+    for (let row = 0; row < board.length; row++) {
+      for (let col = 0; col < board[row].length; col++) {
+        for (let direction of directions) {
+          if (checkDirection(board, row, col, direction.x, direction.y, 'teamOne')) {
+            player1HasWon = true;
+          }
+          if (checkDirection(board, row, col, direction.x, direction.y, 'teamTwo')) {
+            player2HasWon = true;
+          }
+
+          // If both players win, declare a tie
+          if (player1HasWon && player2HasWon) {
+            setWinner('Tie');  // Set winner to "Tie"
+            return;  // Exit function as the game ends in a tie
+          }
+        }
       }
+    }
+
+    // Declare winner if only one player has won
+    if (player1HasWon) {
+      setWinner('Team One');
+    } else if (player2HasWon) {
+      setWinner('Team Two');
     }
   };
 
-  const checkDirection = (board, row, col, dx, dy) => {
-    if (!board[row] || !board[row][col]) {
-      return false;  // Exit early if the starting position is invalid
+  // Adjusted checkDirection to include team checking
+  const checkDirection = (board, row, col, dx, dy, team) => {
+    if (!board[row] || !board[row][col] || board[row][col] !== team) {
+      return false;  // Exit early if the starting position is invalid or doesn't match the team
     }
 
     let count = 0;
-    let team = board[row][col];
 
     // Move in the positive direction (dx, dy)
     for (let i = 0; i < 4; i++) {
       const newRow = row + i * dx;
       const newCol = col + i * dy;
 
-      // Ensure newRow and newCol are within bounds
-      if (newRow >= 0 && newRow < board.length && newCol >= 0 && newCol < board[newRow].length && board[newRow][newCol] === team) {
+      // Ensure newRow and newCol are within bounds and match the team
+      if (
+        newRow >= 0 &&
+        newRow < board.length &&
+        newCol >= 0 &&
+        newCol < board[newRow].length &&
+        board[newRow][newCol] === team
+      ) {
         count++;
       } else {
-        break;  // Stop if out of bounds or different team
+        break;  // Stop if out of bounds or a different team
       }
     }
 
@@ -379,8 +409,14 @@ function Game({ gameMode, scroll, setFadeButtons, setFadeTitle}) {
       const newRow = row - i * dx;
       const newCol = col - i * dy;
 
-      // Ensure newRow and newCol are within bounds
-      if (newRow >= 0 && newRow < board.length && newCol >= 0 && newCol < board[newRow].length && board[newRow][newCol] === team) {
+      // Ensure newRow and newCol are within bounds and match the team
+      if (
+        newRow >= 0 &&
+        newRow < board.length &&
+        newCol >= 0 &&
+        newCol < board[newRow].length &&
+        board[newRow][newCol] === team
+      ) {
         count++;
       } else {
         break;  // Stop if out of bounds or different team
@@ -389,6 +425,7 @@ function Game({ gameMode, scroll, setFadeButtons, setFadeTitle}) {
 
     return count >= 4;  // Return true if there are 4 or more in a row
   };
+
 
   useEffect(() => {
     const handleMouseMove = (event) => {
@@ -440,7 +477,6 @@ function Game({ gameMode, scroll, setFadeButtons, setFadeTitle}) {
                 onSelect={() => handleSelectPiece('teamTwo')} />
             </div>
 
-          {winner && <div className="winner-message">{winner} wins!</div>}
           {/* Display Toast */}
           <Toast message={toastMessage} show={showToast} />
 
@@ -448,6 +484,16 @@ function Game({ gameMode, scroll, setFadeButtons, setFadeTitle}) {
       </div>
 
       {isMenuOpen && <Menu onClose={toggleMenu} onQuit={handleQuit} onRestart={resetGame} />}
+
+      {/* Display WinnerMessage if a winner is detected */}
+      {winner && (
+        <WinnerMessage
+          onClose={() => setWinner(null)}
+          onQuit={handleQuit}
+          onRestart={resetGame}
+          winner={winner}
+        />
+      )}
 
       {/* Piece following the cursor when picked */}
       {heldPiece && (

@@ -1,21 +1,19 @@
 import React from 'react';
 
-function Menu({ onClose, onQuit, onRestart }) {
+function WinnerMessage({ onClose, onQuit, onRestart, winner }) {
   return (
-    <div style={menuOverlayStyle}>
-      <div style={menuContentStyle}>
+    <div style={messageOverlayStyle}>
+      <div style={messageContentStyle}>
         <button onClick={onClose} style={closeButtonStyle}>✕</button> {/* "X" button */}
-        <h2>Paws</h2>
+        <h2>{winner === 'Tie' ? "It's a Tie!" : `${winner} wins!`}</h2>
         <div style={{ display: 'flex', flexDirection: 'column' }}>
-          <button onClick={onRestart} style={buttonStyle}>Start Over</button>
-          <button onClick={onQuit} style={buttonStyle}>Quit</button>
         </div>
       </div>
     </div>
   );
 }
 
-const menuOverlayStyle = {
+const messageOverlayStyle = {
   position: 'fixed',
   top: 0,
   left: 0,
@@ -25,17 +23,16 @@ const menuOverlayStyle = {
   zIndex: 1000,
 };
 
-const menuContentStyle = {
+const messageContentStyle = {
   position: 'absolute',
-  top: '50%',
+  top: '14%', // Adjust to position it in the top third of the page
   left: '50%',
-  transform: 'translate(-50%, -50%)',
+  transform: 'translate(-50%, -30%)', // Center the message horizontally and vertically
   backgroundColor: '#fff',
   padding: '20px',
   borderRadius: '10px',
   width: '300px',
   textAlign: 'center',
-  position: 'relative',
 };
 
 const buttonStyle = {
@@ -54,4 +51,4 @@ const closeButtonStyle = {
   cursor: 'pointer',
 };
 
-export default Menu;
+export default WinnerMessage;
