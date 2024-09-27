@@ -1,7 +1,6 @@
 import React from 'react';
 import teamOneDog from '../images/teamOneDog.png';
 import teamTwoDog from '../images/teamTwoDog.png';
-// import defaultDog from '../images/defaultDog.png';
 
 
 
@@ -18,7 +17,6 @@ function Piece({ team }) {
       style={{
         width: '70px',
         height: '70px',
-        // borderRadius: '50%',
         backgroundImage: `url(${getImageSrc()})`,
         backgroundSize: 'cover',
         backgroundPosition: 'center',

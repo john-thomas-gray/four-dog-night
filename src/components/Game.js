@@ -461,6 +461,8 @@ function Game({ gameMode, scroll, setFadeButtons, setFadeTitle}) {
                   onCornerClick={handleCornerClick}
                   isCurrentTurnSlot={isCurrentTurnSlot}
                   gameMode={gameMode}
+                  heldPiece={heldPiece}
+                  turn={turn}
                 />
                 <div className='east-gravity-button' style={{ visibility: isCurrentPlayerTurn('east') ? 'visible' : 'hidden'}}>
                   <button onClick={() => shiftGravity('right')}>Pull</button>

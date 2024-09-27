@@ -4,7 +4,7 @@ import Slot from './Slot';
 import Piece from './Piece';
 import Corner from './Corner';
 
-function Board({ board, onPlacePiece, onCornerClick, isCurrentTurnSlot, gameMode }) {
+function Board({ board, onPlacePiece, onCornerClick, isCurrentTurnSlot, gameMode, heldPiece, turn }) {
   // Function to determine if a slot is blocked
   const isSlotBlocked = (rowIndex, colIndex) => {
     if (rowIndex === 0) {
@@ -80,7 +80,10 @@ function Board({ board, onPlacePiece, onCornerClick, isCurrentTurnSlot, gameMode
                 onClick={() => onPlacePiece(rowIndex, colIndex)}
                 position={slotPosition}
                 isValid={isValid}
-                isBlocked={isBlocked} // Pass the isBlocked prop
+                isBlocked={isBlocked}
+                heldPiece={heldPiece}
+                gameMode={gameMode}
+                turn={turn}
               >
                 {board[rowIndex][colIndex] && (
                   <Piece team={board[rowIndex][colIndex]} />

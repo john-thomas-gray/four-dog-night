@@ -1,47 +1,58 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import slotArrowNorth from '../images/slot-arrow-north.png';
 import slotArrowSouth from '../images/slot-arrow-south.png';
 import slotArrowEast from '../images/slot-arrow-east.png';
 import slotArrowWest from '../images/slot-arrow-west.png';
+import slotArrowNorthBlack from '../images/slot-arrow-north-black.png';
+import slotArrowSouthBlack from '../images/slot-arrow-south-black.png';
+import slotArrowEastBlack from '../images/slot-arrow-east-black.png';
+import slotArrowWestBlack from '../images/slot-arrow-west-black.png';
 import blocked from '../images/blocked.png';
 import { SPACE } from '../config.js/space';
 
-function Slot({ onClick, children, position, isValid, isBlocked }) {
+function Slot({ onClick, children, position, isValid, isBlocked, heldPiece, turn, gameMode }) {
   const [isHovered, setIsHovered] = useState(false);
 
   let arrowImage;
 
+  const isTeamTwoTurn = gameMode === 'twoPlayer' && turn === 2;
+
   if (isBlocked) {
-    arrowImage = blocked; // Use blocked image if the slot is blocked
+    arrowImage = blocked;
   } else {
-    // Use the arrow image based on the position
     switch (position) {
       case 'north':
-        arrowImage = slotArrowNorth;
+        arrowImage = isTeamTwoTurn ? slotArrowNorthBlack : slotArrowNorth;
         break;
       case 'south':
-        arrowImage = slotArrowSouth;
+        arrowImage = isTeamTwoTurn ? slotArrowSouthBlack : slotArrowSouth;
         break;
       case 'east':
-        arrowImage = slotArrowEast;
+        arrowImage = gameMode === 'fourPlayer' || isTeamTwoTurn ? slotArrowEastBlack : slotArrowEast;
         break;
       case 'west':
+        arrowImage = gameMode === 'fourPlayer' || isTeamTwoTurn ? slotArrowWestBlack : slotArrowWest;
+        break;
       default:
         arrowImage = slotArrowWest;
-        break;
     }
   }
 
-  // Handle mouse enter and leave to highlight the arrow
   const handleMouseEnter = () => {
-    if (!isBlocked && isValid) {
-      setIsHovered(true); // Set hover state to true
+    if (!isBlocked && isValid && heldPiece) {
+      setIsHovered(true);
     }
   };
 
   const handleMouseLeave = () => {
-    setIsHovered(false); // Set hover state to false
+    setIsHovered(false);
   };
+
+  useEffect(() => {
+    if(!heldPiece) {
+      setIsHovered(false);
+    }
+  }, [heldPiece]);
 
   return (
     <div
