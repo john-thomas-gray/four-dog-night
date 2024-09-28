@@ -1,13 +1,12 @@
 import React from 'react';
 import { SPACE } from '../config.js/space';
-import cornerArrowNE from '../images/corner-arrow-NE.png'; // Import corner images
+import cornerArrowNE from '../images/corner-arrow-NE.png';
 import cornerArrowNW from '../images/corner-arrow-NW.png';
 import cornerArrowSE from '../images/corner-arrow-SE.png';
 import cornerArrowSW from '../images/corner-arrow-SW.png';
 
 function Corner({ onClick, cornerPosition, isActive }) {
-  // Determine which corner arrow image to use based on the corner position
-  let arrowImage = cornerArrowNW; // Default to northwest (NW)
+  let arrowImage = cornerArrowNW;
   switch (cornerPosition) {
     case 'NE':
       arrowImage = cornerArrowNE;
@@ -27,19 +26,18 @@ function Corner({ onClick, cornerPosition, isActive }) {
   return (
     <div
       className={`corner ${isActive ? '' : 'inactive'}`}
-      onClick={isActive ? onClick : null} // Disable onClick if inactive
+      onClick={isActive ? onClick : null}
       style={{
         width: SPACE.size,
         height: SPACE.size,
         border: '1px solid transparent',
-        backgroundImage: `url(${arrowImage})`,  // Use the determined corner image
+        backgroundImage: `url(${arrowImage})`,
         backgroundSize: '65%',
         backgroundPosition: 'center',
         backgroundRepeat: 'no-repeat',
         backgroundColor: 'transparent',
       }}
     >
-      {/* Additional content (if any) can be placed here */}
     </div>
   );
 }

@@ -1,0 +1,72 @@
+.landing-section {
+    position: relative;
+    height: 100vh;
+    width: 100vw;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+  }
+
+  .stars-container {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: space-around;
+    align-items: center;
+    width: 100vw;
+    height: 100vh;
+    position: absolute;
+    top: 0;
+    left: 0;
+    z-index: -1; /* Stars in the background */
+  }
+
+  .star {
+    width: 50px;
+    height: 50px;
+    background-image: url('./images/star.png');
+    background-size: contain;
+    background-repeat: no-repeat;
+    margin: 20px;
+  }
+
+  .moon {
+    position: relative;
+    width: 53rem;
+    height: 53rem;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+  }
+
+  .moon-background {
+    width: 100%;
+    height: 100%;
+    background: linear-gradient(125deg, #FCFFCF, #E1E6A3, #A3AB3E);
+    border-radius: 50%;
+    box-shadow: inset -101px 0px 11.7px -35px rgba(0, 0, 0, 0.25);
+    filter: blur(2.5px);
+    position: absolute;
+    top: 0;
+    left: 0;
+  }
+
+  .moon-content {
+    position: relative;
+    z-index: 1;
+    color: white;
+  }
+
+  .start {
+    cursor: pointer;
+    font-size: 2.5rem;
+    transition: opacity 0.5s ease;
+  }
+
+  .fade-out {
+    opacity: 0;
+  }
+
+  .main-title {
+    font-size: 6rem;
+    transition: opacity 0.5s ease;
+  }

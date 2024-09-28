@@ -4,7 +4,7 @@ function Menu({ onClose, onQuit, onRestart }) {
   return (
     <div style={menuOverlayStyle}>
       <div style={menuContentStyle}>
-        <button onClick={onClose} style={closeButtonStyle}>✕</button> {/* "X" button */}
+        <button onClick={onClose} style={closeButtonStyle}>✕</button>
         <h2>Paws</h2>
         <div style={{ display: 'flex', flexDirection: 'column' }}>
           <button onClick={onRestart} style={buttonStyle}>Start Over</button>
@@ -35,7 +35,6 @@ const menuContentStyle = {
   borderRadius: '10px',
   width: '300px',
   textAlign: 'center',
-  position: 'relative',
 };
 
 const buttonStyle = {

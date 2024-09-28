@@ -1,5 +1,3 @@
-import React, { useState } from 'react'
-
 function Landing({ scroll, setGameMode, setFadeButtons, setFadeTitle, fadeButtons, fadeTitle }) {
   const handleClickStart = (mode) => {
     setTimeout(() => {
@@ -20,6 +18,10 @@ function Landing({ scroll, setGameMode, setFadeButtons, setFadeTitle, fadeButton
 
   return (
     <div className="landing-section">
+      {/* <div className="star"></div>
+      <div className="star"></div>
+      <div className="star"></div>
+      <div className="star"></div> */}
       <div className="moon">
         <div className="moon-background"></div>
         <div className="moon-content">

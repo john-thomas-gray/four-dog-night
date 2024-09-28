@@ -68,8 +68,8 @@ function Slot({ onClick, children, position, isValid, isBlocked, heldPiece, turn
         backgroundSize: '65%',
         backgroundPosition: 'center',
         backgroundRepeat: 'no-repeat',
-        backgroundColor: isHovered ? 'rgba(255, 255, 0, 0.5)' : 'transparent', // Highlight color when hovered
-        cursor: isValid && !isBlocked ? 'pointer' : 'not-allowed',
+        backgroundColor: isHovered ? 'rgba(255, 255, 0, 0.5)' : 'transparent',
+        // cursor: isValid && !isBlocked ? 'pointer' : 'not-allowed',
       }}
     >
       {children}
