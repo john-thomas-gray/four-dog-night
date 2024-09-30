@@ -5,19 +5,14 @@ import Piece from './Piece';
 import Corner from './Corner';
 
 function Board({ board, onPlacePiece, onCornerClick, isCurrentTurnSlot, gameMode, heldPiece, turn }) {
-  // Function to determine if a slot is blocked
   const isSlotBlocked = (rowIndex, colIndex) => {
     if (rowIndex === 0) {
-      // Top slot: blocked if the space below is occupied
       return board[1][colIndex] !== null;
     } else if (rowIndex === board.length - 1) {
-      // Bottom slot: blocked if the space above is occupied
       return board[board.length - 2][colIndex] !== null;
     } else if (colIndex === 0) {
-      // Left slot: blocked if the space to the right is occupied
       return board[rowIndex][1] !== null;
     } else if (colIndex === board[rowIndex].length - 1) {
-      // Right slot: blocked if the space to the left is occupied
       return board[rowIndex][board[rowIndex].length - 2] !== null;
     }
     return false;
@@ -64,7 +59,6 @@ function Board({ board, onPlacePiece, onCornerClick, isCurrentTurnSlot, gameMode
 
             const isValid = isSlot && isCurrentTurnSlot(rowIndex, colIndex);
 
-            // Determine if the slot is blocked
             const isBlocked = isSlot && isSlotBlocked(rowIndex, colIndex);
 
             return isCorner ? (
@@ -72,7 +66,7 @@ function Board({ board, onPlacePiece, onCornerClick, isCurrentTurnSlot, gameMode
                 key={`${rowIndex}-${colIndex}`}
                 onClick={() => onCornerClick(rowIndex, colIndex)}
                 cornerPosition={cornerPosition}
-                isActive={gameMode === 'fourPlayer'} // Set isActive based on gameMode
+                isActive={gameMode === 'fourPlayer'}
               />
             ) : isSlot ? (
               <Slot

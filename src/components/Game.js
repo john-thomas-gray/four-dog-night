@@ -369,7 +369,6 @@ function Game({ gameMode, scroll, setFadeButtons, setFadeTitle}) {
       }
     }
 
-    // Declare winner if only one player has won
     if (player1HasWon) {
       setWinner('Team One');
     } else if (player2HasWon) {
@@ -377,20 +376,17 @@ function Game({ gameMode, scroll, setFadeButtons, setFadeTitle}) {
     }
   };
 
-  // Adjusted checkDirection to include team checking
   const checkDirection = (board, row, col, dx, dy, team) => {
     if (!board[row] || !board[row][col] || board[row][col] !== team) {
-      return false;  // Exit early if the starting position is invalid or doesn't match the team
+      return false;
     }
 
     let count = 0;
 
-    // Move in the positive direction (dx, dy)
     for (let i = 0; i < 4; i++) {
       const newRow = row + i * dx;
       const newCol = col + i * dy;
 
-      // Ensure newRow and newCol are within bounds and match the team
       if (
         newRow >= 0 &&
         newRow < board.length &&
@@ -400,16 +396,14 @@ function Game({ gameMode, scroll, setFadeButtons, setFadeTitle}) {
       ) {
         count++;
       } else {
-        break;  // Stop if out of bounds or a different team
+        break;
       }
     }
 
-    // Move in the negative direction (-dx, -dy)
     for (let i = 1; i < 4; i++) {
       const newRow = row - i * dx;
       const newCol = col - i * dy;
 
-      // Ensure newRow and newCol are within bounds and match the team
       if (
         newRow >= 0 &&
         newRow < board.length &&
@@ -419,11 +413,11 @@ function Game({ gameMode, scroll, setFadeButtons, setFadeTitle}) {
       ) {
         count++;
       } else {
-        break;  // Stop if out of bounds or different team
+        break;
       }
     }
 
-    return count >= 4;  // Return true if there are 4 or more in a row
+    return count >= 4;
   };
 
 
@@ -479,7 +473,6 @@ function Game({ gameMode, scroll, setFadeButtons, setFadeTitle}) {
                 onSelect={() => handleSelectPiece('teamTwo')} />
             </div>
 
-          {/* Display Toast */}
           <Toast message={toastMessage} show={showToast} />
 
 
@@ -487,7 +480,6 @@ function Game({ gameMode, scroll, setFadeButtons, setFadeTitle}) {
 
       {isMenuOpen && <Menu onClose={toggleMenu} onQuit={handleQuit} onRestart={resetGame} />}
 
-      {/* Display WinnerMessage if a winner is detected */}
       {winner && (
         <WinnerMessage
           onClose={() => setWinner(null)}
@@ -497,7 +489,6 @@ function Game({ gameMode, scroll, setFadeButtons, setFadeTitle}) {
         />
       )}
 
-      {/* Piece following the cursor when picked */}
       {heldPiece && (
         <div
         className="floating-piece"
@@ -505,8 +496,8 @@ function Game({ gameMode, scroll, setFadeButtons, setFadeTitle}) {
           position: 'fixed',
           left: cursorPosition.x,
           top: cursorPosition.y,
-          pointerEvents: 'none', // Prevents interference with other elements
-          transform: 'translate(-50%, -50%)' // Center the piece on the cursor
+          pointerEvents: 'none',
+          transform: 'translate(-50%, -50%)'
         }}
         >
           <Piece team={heldPiece} />
