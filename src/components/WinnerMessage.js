@@ -5,12 +5,12 @@ function WinnerMessage({ onClose, onQuit, onRestart, winner }) {
   return (
     <div style={messageOverlayStyle}>
       <div style={messageContentStyle}>
-        <button onClick={onClose} style={closeButtonStyle}>✕</button> {/* "X" button */}
+        <button onClick={onClose} style={closeButtonStyle}>✕</button>
         <h2>{winner === 'Tie' ? "It's a Tie!" : `${winner} wins!`}</h2>
         <img
           src={dogSleep}
           alt="Sleeping Dog"
-          style={imageStyle}  // Apply the style to adjust the size
+          style={imageStyle}
         />
         <div style={{ display: 'flex', flexDirection: 'column' }}>
         </div>
@@ -31,9 +31,9 @@ const messageOverlayStyle = {
 
 const messageContentStyle = {
   position: 'absolute',
-  top: '10%', // Adjust to position it in the top third of the page
+  top: '10%',
   left: '50%',
-  transform: 'translate(-50%, -30%)', // Center the message horizontally and vertically
+  transform: 'translate(-50%, -30%)',
   backgroundColor: '#fff',
   padding: '20px',
   borderRadius: '10px',
@@ -42,9 +42,9 @@ const messageContentStyle = {
 };
 
 const imageStyle = {
-  width: '150px',  // Set the width to make the image small
-  height: 'auto',  // Maintain aspect ratio
-  marginTop: '10px',  // Add some space between the h2 and the image
+  width: '150px',
+  height: 'auto',
+  marginTop: '10px',
 };
 
 const closeButtonStyle = {

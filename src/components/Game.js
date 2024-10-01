@@ -85,7 +85,7 @@ function Game({ gameMode, scroll, setFadeButtons, setFadeTitle}) {
   const rotateAction = (direction) => {
 
     rotateBoard(direction);
-    handleTurnChange(turn); // End current player's turn after rotation
+    handleTurnChange(turn);
 
   };
 
@@ -116,9 +116,9 @@ function Game({ gameMode, scroll, setFadeButtons, setFadeTitle}) {
 
   const handleTurnChange = () => {
     if (gameMode === 'fourPlayer') {
-      setTurn((prevTurn) => (prevTurn === 4 ? 1 : prevTurn + 1)); // Cycle between 1 to 4 in four-player mode
+      setTurn((prevTurn) => (prevTurn === 4 ? 1 : prevTurn + 1));
     } else {
-      setTurn((prevTurn) => (prevTurn === 2 ? 1 : prevTurn + 1)); // Cycle between 1 and 2 in two-player mode
+      setTurn((prevTurn) => (prevTurn === 2 ? 1 : prevTurn + 1));
     }
   };
 
@@ -155,49 +155,41 @@ function Game({ gameMode, scroll, setFadeButtons, setFadeTitle}) {
     return false;
   };
 
-  // Calculate the final destination for a piece placed in a slot, stopping at slots or occupied spaces
   const getFinalDestination = (rowIndex, colIndex) => {
     let destinationRow = rowIndex;
     let destinationCol = colIndex;
 
-    // Handle movement based on slot position
     if (rowIndex === 0) {
-      // Top slot: Move straight down
       if (board[destinationRow + 1][destinationCol] !== null) {
-        triggerToast("Row blocked!"); // Show toast if row is blocked
-        return { destinationRow: null, destinationCol: null }; // Invalid destination
+        triggerToast("Row blocked!");
+        return { destinationRow: null, destinationCol: null };
       }
 
-      // Move down until an empty space or another slot is found
       while (destinationRow < board.length - 1 && board[destinationRow + 1][destinationCol] === null && !isSlot(destinationRow + 1, destinationCol)) {
         destinationRow++;
       }
     } else if (rowIndex === board.length - 1) {
-      // Bottom slot: Move straight up
       if (board[destinationRow - 1][destinationCol] !== null) {
-        triggerToast("Row blocked!"); // Show toast if row is blocked
-        return { destinationRow: null, destinationCol: null }; // Invalid destination
+        triggerToast("Row blocked!");
+        return { destinationRow: null, destinationCol: null };
       }
 
-      // Move up until an empty space or another slot is found
       while (destinationRow > 0 && board[destinationRow - 1][destinationCol] === null && !isSlot(destinationRow - 1, destinationCol)) {
         destinationRow--;
       }
     } else if (colIndex === 0) {
-      // Left slot: Move right
       if (board[rowIndex][destinationCol + 1] !== null) {
-        triggerToast("Row blocked!"); // Show toast if row is blocked
-        return { destinationRow: null, destinationCol: null }; // Invalid destination
+        triggerToast("Row blocked!");
+        return { destinationRow: null, destinationCol: null };
       }
 
       while (destinationCol < board[rowIndex].length - 1 && board[rowIndex][destinationCol + 1] === null && !isSlot(rowIndex, destinationCol + 1)) {
         destinationCol++;
       }
     } else if (colIndex === board[rowIndex].length - 1) {
-      // Right slot: Move left
       if (board[rowIndex][destinationCol - 1] !== null) {
-        triggerToast("Row blocked!"); // Show toast if row is blocked
-        return { destinationRow: null, destinationCol: null }; // Invalid destination
+        triggerToast("Row blocked!");
+        return { destinationRow: null, destinationCol: null };
       }
 
       while (destinationCol > 0 && board[rowIndex][destinationCol - 1] === null && !isSlot(rowIndex, destinationCol - 1)) {
@@ -211,7 +203,7 @@ function Game({ gameMode, scroll, setFadeButtons, setFadeTitle}) {
   const shiftGravity = (direction) => {
 
     const newBoard = [...board];
-    const positionsToCheck = []; // To track the positions of moved pieces
+    const positionsToCheck = [];
     const side = playerSides[turn];
 
     if (gameMode === 'fourPlayer') {
@@ -239,7 +231,6 @@ function Game({ gameMode, scroll, setFadeButtons, setFadeTitle}) {
               newBoard[destRow][col] = null;
               destRow--;
             }
-            // Add the final destination of the moved piece
             positionsToCheck.push({ row: destRow, col });
           }
         }
@@ -254,7 +245,6 @@ function Game({ gameMode, scroll, setFadeButtons, setFadeTitle}) {
               newBoard[destRow][col] = null;
               destRow++;
             }
-            // Add the final destination of the moved piece
             positionsToCheck.push({ row: destRow, col });
           }
         }
@@ -269,7 +259,6 @@ function Game({ gameMode, scroll, setFadeButtons, setFadeTitle}) {
               newBoard[row][destCol] = null;
               destCol--;
             }
-            // Add the final destination of the moved piece
             positionsToCheck.push({ row, col: destCol });
           }
         }
@@ -284,7 +273,6 @@ function Game({ gameMode, scroll, setFadeButtons, setFadeTitle}) {
               newBoard[row][destCol] = null;
               destCol++;
             }
-            // Add the final destination of the moved piece
             positionsToCheck.push({ row, col: destCol });
           }
         }
@@ -293,7 +281,6 @@ function Game({ gameMode, scroll, setFadeButtons, setFadeTitle}) {
     setHeldPiece(null);
     setBoard(newBoard);
 
-    // Check for winners at the positions where pieces were moved
     positionsToCheck.forEach(({ row, col }) => {
       checkForWinner(newBoard, row, col);
     });
@@ -301,14 +288,12 @@ function Game({ gameMode, scroll, setFadeButtons, setFadeTitle}) {
     handleTurnChange(turn);
   };
 
-
-  // Trigger a toast notification
   const triggerToast = (message) => {
     setToastMessage(message);
     setShowToast(true);
     setTimeout(() => {
       setShowToast(false);
-    }, 2000); // Toast disappears after 2 seconds
+    }, 2000);
   };
 
   const handlePlacePiece = (rowIndex, colIndex) => {
@@ -320,10 +305,8 @@ function Game({ gameMode, scroll, setFadeButtons, setFadeTitle}) {
 
       const { destinationRow, destinationCol } = getFinalDestination(rowIndex, colIndex);
 
-      // Prevent placement if destination is invalid
       if (destinationRow === null || destinationCol === null) return;
 
-      // Check if the final destination is unoccupied
       if (board[destinationRow][destinationCol] === null) {
         const newBoard = board.map((row, rIdx) =>
           row.map((col, cIdx) =>
@@ -340,16 +323,15 @@ function Game({ gameMode, scroll, setFadeButtons, setFadeTitle}) {
 
   const checkForWinner = (board) => {
     const directions = [
-      { x: 0, y: 1 },  // Horizontal
-      { x: 1, y: 0 },  // Vertical
-      { x: 1, y: 1 },  // Diagonal (down-right)
-      { x: 1, y: -1 }  // Diagonal (down-left)
+      { x: 0, y: 1 },
+      { x: 1, y: 0 },
+      { x: 1, y: 1 },
+      { x: 1, y: -1 }
     ];
 
     let player1HasWon = false;
     let player2HasWon = false;
 
-    // Loop through the entire board to check if both players win simultaneously
     for (let row = 0; row < board.length; row++) {
       for (let col = 0; col < board[row].length; col++) {
         for (let direction of directions) {
@@ -360,10 +342,9 @@ function Game({ gameMode, scroll, setFadeButtons, setFadeTitle}) {
             player2HasWon = true;
           }
 
-          // If both players win, declare a tie
           if (player1HasWon && player2HasWon) {
-            setWinner('Tie');  // Set winner to "Tie"
-            return;  // Exit function as the game ends in a tie
+            setWinner('Tie');
+            return;
           }
         }
       }

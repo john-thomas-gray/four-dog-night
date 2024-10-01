@@ -9,7 +9,6 @@ function GearButton({ onClick }) {
 }
 
 const gearButtonStyle = {
-    // display: 'flex',
     position: 'fixed',
     bottom: '20px',
     left: '20px',
