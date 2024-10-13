@@ -7,6 +7,7 @@ function Home() {
   const [gameMode, setGameMode] = useState(null);
   const [fadeButtons, setFadeButtons] = useState(false);
   const [fadeTitle, setFadeTitle] = useState(false);
+  const [firstTimeTwoPlayer, setFirstTimeTwoPlayer] = useState(false);
 
   const scroll = (id) => {
     const element = document.getElementById(id);
@@ -46,6 +47,18 @@ function Home() {
     }
   }, []);
 
+  useEffect(() => {
+    // Check if it's the user's first time playing two-player mode
+    if (gameMode === 'twoPlayer') {
+      const hasPlayedTwoPlayerBefore = localStorage.getItem('hasPlayedTwoPlayer');
+      if (!hasPlayedTwoPlayerBefore) {
+        setFirstTimeTwoPlayer(true);
+        // Set flag in localStorage so it doesn't show again
+        localStorage.setItem('hasPlayedTwoPlayer', 'true');
+      }
+    }
+  }, [gameMode]);
+
   return (
     <main className='main'>
         <div>
@@ -70,6 +83,12 @@ function Home() {
                   setFadeTitle={setFadeTitle}
                   />
             </section>
+            {firstTimeTwoPlayer && (
+          <div className="first-time-message">
+            <p>Welcome to two-player mode! This is your first time playing.</p>
+            <button onClick={() => setFirstTimeTwoPlayer(false)}>Got it!</button>
+          </div>
+        )}
 
         </div>
     </main>
