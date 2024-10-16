@@ -6,7 +6,6 @@ import Toast from './Toast';
 import GearButton from './GearButton';
 import Menu from './Menu';
 import WinnerMessage from './WinnerMessage';
-import tutorialSteps2P from '../data/TutorialSteps2P';
 
 function Game({ gameMode, scroll, setFadeButtons, setFadeTitle}) {
   const rows = [9, 9, 9, 9, 9, 9, 9, 9, 9];
@@ -21,8 +20,6 @@ function Game({ gameMode, scroll, setFadeButtons, setFadeTitle}) {
   const [toastMessage, setToastMessage] = useState('');
   const [showToast, setShowToast] = useState(false);
   const [isMenuOpen, setIsMenuOpen] = useState(false);
-  const [showTutorial, setShowTutorial] = useState(false);
-  const [tutorialStep, setTutorialStep] = useState(0);
 
 
   const playerSides = gameMode === 'fourPlayer' ? {
